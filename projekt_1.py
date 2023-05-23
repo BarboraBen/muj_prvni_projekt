@@ -45,7 +45,8 @@ if username_input in users:
         print(40 * "-")
         print(f"Welcome to the app, {username_input}")
     else:
-        print("Wrong password")
+        print("Wrong password, terminating the program..")
+        exit()
 else:
     print("Unregistered user, terminating the program..")
     exit()
@@ -56,7 +57,7 @@ text_choice = input("Enter a number btw. 1 and 3 to select: ")
 print(40 * "-")
 if text_choice.isdigit():
     text_choice = int(text_choice)
-    if text_choice not in range(4):
+    if text_choice not in [1, 2, 3]:
         print("Wrong number, terminating the program.")
         exit()
 else:
@@ -64,44 +65,26 @@ else:
     exit()
 
 for text in TEXTS:
-    TEXTS_copy = [text.replace(".", "") for text in TEXTS]
-    TEXTS_copy = [text.replace(",", "") for text in TEXTS_copy]
-    TEXTS_copy = [text.replace("\n", " ") for text in TEXTS_copy]
-    TEXTS_copy = [text.strip() for text in TEXTS_copy]
+    TEXTS_copy = [text.replace("\n", " ").replace(".", "").replace(",", "").strip() for text in TEXTS]
     TEXTS_copy = [text.split(" ") for text in TEXTS_copy]
 
 number_of_words = (len(TEXTS_copy[text_choice-1]))
 print(f"There are {number_of_words} words in selected text.")
 
-titlecase = 0
-for i in TEXTS_copy[text_choice-1]:
-    if i[0].isupper():
-        titlecase += 1
+titlecase = sum(1 for i in TEXTS_copy[text_choice-1] if i[0].isupper())
 print(f"There are {titlecase} titlecase words.")
 
-uppercase = 0
-for i in TEXTS_copy[text_choice-1]:
-    if i.isupper():
-        uppercase += 1
+uppercase = sum(1 for i in TEXTS_copy[text_choice-1] if i.isupper())
 print(f"There are {uppercase} uppercase words.")
 
-lowercase = 0
-for i in TEXTS_copy[text_choice-1]:
-    if i.islower():
-        lowercase += 1
+lowercase = sum(1 for i in TEXTS_copy[text_choice-1] if i.islower())
 print(f"There are {lowercase} lowercase words.")
 
-digit = 0
-for i in TEXTS_copy[text_choice-1]:
-    if i.isdigit():
-        digit += 1
+digit = sum(1 for i in TEXTS_copy[text_choice-1] if i.isdigit())
 print(f"There are {digit} numeric strings.")
 
-sum = 0
-for i in TEXTS_copy[text_choice-1]:
-    if i.isdigit():
-        sum += int(i)
-print(f"The sum of all the numbers {sum}.")
+digit_sum = sum(int(i) for i in TEXTS_copy[text_choice-1] if i.isdigit())
+print(f"The sum of all the numbers {digit_sum}.")
 
 frequency = {}
 for i in TEXTS_copy[text_choice-1]:
@@ -111,8 +94,8 @@ for i in TEXTS_copy[text_choice-1]:
         frequency[len(i)] += 1
 
 print(40 * "-")
-print("LEN| OCCURENCES  NR")
+print(f"{'LEN':3}|{'   OCCURENCES':20}|{'NR.':3}")
 print(40 * "-")
 frequency_sorted = sorted(frequency.items())
 for i, j in frequency_sorted:
-    print("  ", i, "|", j * "*", "\t", j, sep="")
+    print(f"{i:3}|{'*'*j:20}|{j:3}")
